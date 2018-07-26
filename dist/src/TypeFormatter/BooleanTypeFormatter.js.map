@@ -1,0 +1,1 @@
+{"version":3,"file":"BooleanTypeFormatter.js","sourceRoot":"/src/","sources":["src/TypeFormatter/BooleanTypeFormatter.ts"],"names":[],"mappings":";;AAGA,qDAAkD;AAElD;IACW,YAAY,CAAC,IAAiB;QACjC,OAAO,IAAI,YAAY,yBAAW,CAAC;IACvC,CAAC;IACM,aAAa,CAAC,IAAiB;QAClC,OAAO,EAAC,IAAI,EAAE,SAAS,EAAC,CAAC;IAC7B,CAAC;IACM,WAAW,CAAC,IAAiB;QAChC,OAAO,EAAE,CAAC;IACd,CAAC;CACJ;AAVD,oDAUC"}
