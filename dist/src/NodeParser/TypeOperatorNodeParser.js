@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ts = require("typescript");
 const EnumType_1 = require("../Type/EnumType");
-const __1 = require("../..");
-const __2 = require("../..");
+const UnionType_1 = require("../Type/UnionType");
+const LiteralType_1 = require("../Type/LiteralType");
 class TypeOperatorNodeParser {
     constructor(typeChecker, childNodeParser) {
         this.typeChecker = typeChecker;
@@ -16,8 +16,8 @@ class TypeOperatorNodeParser {
         const type = this.typeChecker.getTypeFromTypeNode(node);
         if (node.type && context.getArguments().length) {
             let p = context.getParameterProperties(node.type.typeName.text);
-            return new __1.UnionType(p.map((op) => {
-                return new __2.LiteralType(op.name);
+            return new UnionType_1.UnionType(p.map((op) => {
+                return new LiteralType_1.LiteralType(op.name);
             }));
         }
         else {
