@@ -47,10 +47,29 @@ class InterfaceNodeParser {
         const properties = node.members
             .filter((property) => property.kind === ts.SyntaxKind.IndexSignature);
         if (!properties.length) {
-            return false;
+            if (node.heritageClauses) {
+                if (node.heritageClauses[0].types[0].typeArguments) {
+                    let extendedTypeArgument = node.heritageClauses[0].types[0].typeArguments[0];
+                    let extendedNode = this.childNodeParser.createType(extendedTypeArgument, context);
+                    if (extendedNode.name === "any" || extendedNode.name === "object" || extendedNode.constructor.name === "AnyType") {
+                        return extendedNode;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
         }
-        const signature = properties[0];
-        return this.childNodeParser.createType(signature.type, context);
+        else {
+            const signature = properties[0];
+            return this.childNodeParser.createType(signature.type, context);
+        }
     }
     getTypeId(node, context) {
         const fullName = `interface-${node.getFullStart()}`;
