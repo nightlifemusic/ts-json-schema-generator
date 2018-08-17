@@ -1,0 +1,186 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "allOf": [
+        {
+            "$ref": "#/definitions/IReq"
+        }
+    ],
+    "definitions": {
+        "IReq": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/IReq1"
+                },
+                {
+                    "$ref": "#/definitions/IReq2"
+                }
+            ]
+        },
+        "IReq1": {
+            "additionalProperties": false,
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/ITestKV1"
+                },
+                "zone": {
+                    "enum": [
+                        1
+                    ],
+                    "type": "number"
+                }
+            },
+            "required": [
+                "config",
+                "zone"
+            ],
+            "type": "object"
+        },
+        "IReq2": {
+            "additionalProperties": false,
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/ITestKV2"
+                },
+                "zone": {
+                    "enum": [
+                        2
+                    ],
+                    "type": "number"
+                }
+            },
+            "required": [
+                "config",
+                "zone"
+            ],
+            "type": "object"
+        },
+        "ITestKV1": {
+            "$ref": "#/definitions/OneOfKeyValueify<ITestProperties1>"
+        },
+        "ITestKV2": {
+            "$ref": "#/definitions/OneOfKeyValueify<ITestProperties2>"
+        },
+        "OneOfKeyValueify<ITestProperties1>": {
+            "anyOf": [
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "key": {
+                            "enum": [
+                                "ABC"
+                            ],
+                            "type": "string"
+                        },
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "key",
+                        "value"
+                    ],
+                    "type": "object"
+                },
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "key": {
+                            "enum": [
+                                "DEF"
+                            ],
+                            "type": "string"
+                        },
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "key",
+                        "value"
+                    ],
+                    "type": "object"
+                },
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "key": {
+                            "enum": [
+                                "GHI"
+                            ],
+                            "type": "string"
+                        },
+                        "value": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "key",
+                        "value"
+                    ],
+                    "type": "object"
+                }
+            ]
+        },
+        "OneOfKeyValueify<ITestProperties2>": {
+            "anyOf": [
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "key": {
+                            "enum": [
+                                "ABC2"
+                            ],
+                            "type": "string"
+                        },
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "key",
+                        "value"
+                    ],
+                    "type": "object"
+                },
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "key": {
+                            "enum": [
+                                "DEF2"
+                            ],
+                            "type": "string"
+                        },
+                        "value": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "key",
+                        "value"
+                    ],
+                    "type": "object"
+                },
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "key": {
+                            "enum": [
+                                "GHI2"
+                            ],
+                            "type": "string"
+                        },
+                        "value": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "key",
+                        "value"
+                    ],
+                    "type": "object"
+                }
+            ]
+        }
+    }
+}

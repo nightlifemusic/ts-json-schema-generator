@@ -1,5 +1,5 @@
 {
-    "$schema": "http://jsonschema.org/draft06/schema#",
+    "$schema": "http://json-schema.org/draft-06/schema#",
     "allOf": [
         {
             "$ref": "#/definitions/paramAny"

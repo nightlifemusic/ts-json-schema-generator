@@ -8,6 +8,7 @@ import { createParser } from "../factory/parser";
 import { createProgram } from "../factory/program";
 import { Config } from "../src/Config";
 
+
 import { SchemaGenerator } from "../src/SchemaGenerator";
 
 const validator = new Ajv();
@@ -53,6 +54,8 @@ function assertSchema(name: string, type: string, only: boolean = false): void {
 }
 
 describe("valid-data", () => {
+
+    assertSchema("custom-tests/nested-map-type", "ITestKV");
     assertSchema("custom-tests/additional-props-type", "paramAny");
     assertSchema("custom-tests/additional-props-multiple-args", "paramAny");
     assertSchema("custom-tests/any-param", "MyObject");
