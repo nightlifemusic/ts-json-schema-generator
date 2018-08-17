@@ -66,8 +66,10 @@ export class MappedTypeNodeParser implements SubNodeParser {
                         [K in keyof T]: Array<K>
                     }
                 */
-                    // @ts-ignore
-                if (node.type.typeArguments.length == 2) {
+
+                // @ts-ignore
+                let typeArgLength = node.type.typeArguments.length;
+                if (typeArgLength == 2 || typeArgLength == 1) {
                     /*
                         {
                             [K in keyof T]: Pick<T, K>
@@ -82,11 +84,22 @@ export class MappedTypeNodeParser implements SubNodeParser {
                             let subContext = new Context();
                             subContext.pushArgument(OriginalArg);
                             subContext.pushArgument(new LiteralType(props.getName()))
+
                             // @ts-ignore
-                            node.type.typeArguments.forEach((typeArg: ts.Node) => {
+                            if (typeArgLength == 2) {
                                 // @ts-ignore
-                                subContext.pushParameter(typeArg.typeName.text);
-                            })
+                                node.type.typeArguments.forEach((typeArg: ts.Node) => { // Pick<T, K>
+                                    // @ts-ignore
+                                    subContext.pushParameter(typeArg.typeName.text);
+                                })
+                            } else {
+                                // @ts-ignore
+                                node.type.typeArguments[0].typeArguments.forEach((typeArg: ts.Node) => {
+                                    // @ts-ignore
+                                    subContext.pushParameter(typeArg.typeName.text);
+                                })
+                            }
+
                             // @ts-ignore
                             props.setType(this.childNodeParser.createType(node.type!, subContext));
                         })
