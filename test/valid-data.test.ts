@@ -50,12 +50,32 @@ function assertSchema(name: string, type: string, only: boolean = false): void {
 
         validator.validateSchema(actual);
         assert.isNull(validator.errors);
+
+        // var fs = require('fs');
+        // fs.writeFile("test.json", JSON.stringify(actual), function (err: any) {
+        //     if (err) {
+        //         return console.log(err);
+        //     }
+
+        //     console.log("The file was saved!");
+        // });
     });
 }
 
 describe("valid-data", () => {
 
+    assertSchema("type-alias-intersection", "MyType");
+    assertSchema("custom-tests/oneof-keyvalueify-intersection", "MyObject");
+    assertSchema("custom-tests/oneof-keyvalueify", "MyObject");
+
+    assertSchema("custom-tests/simple-union", "MyType", false);
+    assertSchema("custom-tests/intersection-with-union-type", "MyType", true);
+
     assertSchema("custom-tests/nested-map-type", "ITestKV");
+    assertSchema("custom-tests/nested-map-type-multiple", "nl_sysconf.config.set_zone.IReq");
+    assertSchema("custom-tests/sysconf_types", "nl_sysconf.config.set_zone.IReq");
+
+
     assertSchema("custom-tests/additional-props-type", "paramAny");
     assertSchema("custom-tests/additional-props-multiple-args", "paramAny");
     assertSchema("custom-tests/any-param", "MyObject");

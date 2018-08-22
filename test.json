@@ -1,0 +1,1 @@
+{"$schema":"http://json-schema.org/draft-06/schema#","definitions":{"MyType":{"type":"object","additionalProperties":false,"properties":{"a":{"type":"string"}},"required":["a"]},"c":{"type":"object","properties":{"c":{"type":"string"}},"required":["c"],"additionalProperties":false}},"allOf":[{"$ref":"#/definitions/MyType"}]}
