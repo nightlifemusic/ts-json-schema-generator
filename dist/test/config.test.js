@@ -37,7 +37,8 @@ describe("config", () => {
     assertSchema("jsdoc-complex-none", { type: "MyObject", expose: "export", topRef: true, jsDoc: "none" });
     assertSchema("jsdoc-complex-basic", { type: "MyObject", expose: "export", topRef: true, jsDoc: "basic" });
     assertSchema("jsdoc-complex-extended", { type: "MyObject", expose: "export", topRef: true, jsDoc: "extended" });
-    assertSchema("jsdoc-description-only", { type: "MyObject", expose: "export", topRef: true, jsDoc: "extended" });
+    assertSchema("jsdoc-complex-extended", { type: "MyObject", expose: "export", topRef: true, jsDoc: "extended" });
+    assertSchema("ajv-regexp", { type: "MyObject", expose: "export", topRef: true, jsDoc: "extended" });
     assertSchema("jsdoc-hide", { type: "MyObject", expose: "export", topRef: true, jsDoc: "extended" });
     assertSchema("jsdoc-inheritance", { type: "MyObject", expose: "export", topRef: true, jsDoc: "extended" });
 });

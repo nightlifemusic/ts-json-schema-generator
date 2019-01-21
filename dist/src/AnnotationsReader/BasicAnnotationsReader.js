@@ -47,6 +47,7 @@ BasicAnnotationsReader.textTags = [
     "description",
     "format",
     "pattern",
+    "regexp"
 ];
 BasicAnnotationsReader.jsonTags = [
     "minimum",
