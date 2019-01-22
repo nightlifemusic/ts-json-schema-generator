@@ -24,6 +24,9 @@ class BasicAnnotationsReader {
             return undefined;
         }
         if (BasicAnnotationsReader.textTags.indexOf(jsDocTag.name) >= 0) {
+            if (jsDocTag.name === "regexp") {
+                jsDocTag.text = jsDocTag.text.replace(/&#8205;/g, '');
+            }
             return jsDocTag.text;
         }
         else if (BasicAnnotationsReader.jsonTags.indexOf(jsDocTag.name) >= 0) {
