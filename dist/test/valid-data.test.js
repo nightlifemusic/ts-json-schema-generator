@@ -110,5 +110,6 @@ describe("valid-data", () => {
     assertSchema("nullable-null", "MyObject");
     assertSchema("interface-keyvalueify", "MyObject");
     assertSchema("custom-tests/oneof", "MyObject");
+    assertSchema("custom-tests/prefixUnaryExpression", "MyObject");
 });
 //# sourceMappingURL=valid-data.test.js.map

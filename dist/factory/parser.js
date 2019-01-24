@@ -33,6 +33,7 @@ const TypeReferenceNodeParser_1 = require("../src/NodeParser/TypeReferenceNodePa
 const UnionNodeParser_1 = require("../src/NodeParser/UnionNodeParser");
 const VoidTypeNodeParser_1 = require("../src/NodeParser/VoidTypeNodeParser");
 const TopRefNodeParser_1 = require("../src/TopRefNodeParser");
+const PrefixUnaryExpressionParser_1 = require("../src/NodeParser/PrefixUnaryExpressionParser");
 function createParser(program, config) {
     const typeChecker = program.getTypeChecker();
     const chainNodeParser = new ChainNodeParser_1.ChainNodeParser(typeChecker, []);
@@ -67,6 +68,7 @@ function createParser(program, config) {
         .addNodeParser(new NumberLiteralNodeParser_1.NumberLiteralNodeParser())
         .addNodeParser(new BooleanLiteralNodeParser_1.BooleanLiteralNodeParser())
         .addNodeParser(new NullLiteralNodeParser_1.NullLiteralNodeParser())
+        .addNodeParser(new PrefixUnaryExpressionParser_1.PrefixUnaryExpressionParser())
         .addNodeParser(new LiteralNodeParser_1.LiteralNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new ParenthesizedNodeParser_1.ParenthesizedNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new TypeReferenceNodeParser_1.TypeReferenceNodeParser(typeChecker, chainNodeParser))
