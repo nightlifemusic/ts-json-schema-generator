@@ -116,6 +116,7 @@ describe("valid-data", () => {
     assertSchema("generic-recursive", "MyObject");
     assertSchema("type-mapped", "MyObject");
     assertSchema("type-mapped-pick", 'MyObject');
+    assertSchema("type-mapped-indexed", 'MyObject');
     assertSchema("custom-tests/extended-interface-typearg", "MyObject");
     assertSchema("type-pick1", "MyObject");
     assertSchema("type-pick2", "MyObject");

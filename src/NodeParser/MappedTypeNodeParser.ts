@@ -66,14 +66,14 @@ export class MappedTypeNodeParser implements SubNodeParser {
                         [K in keyof T]: Array<K>
                     }
                 */
-                    // @ts-ignore
+                // @ts-ignore
                 if (node.type.typeArguments.length == 2) {
                     /*
                         {
                             [K in keyof T]: Pick<T, K>
                         }
                     */
-                   // @ts-ignore
+                    // @ts-ignore
                     if (node.typeParameter.constraint && node.typeParameter.constraint.type) {
                         let OriginalArg = _.cloneDeep(context.getArguments()[0]) //clone it
                         // @ts-ignore
@@ -97,6 +97,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
                     }
 
                 } else {
+                    // @ts-ignore
                     originalPropsTemp = context.getParameterProperties(node.typeParameter.constraint.type.typeName.text);
                 }
                 // @ts-ignore
@@ -120,7 +121,7 @@ export class MappedTypeNodeParser implements SubNodeParser {
                 originalPropsTemp = context.getParameterProperties(node.typeParameter.constraint!.typeName.text);
             } else { originalPropsTemp = []; }
 
-            const originalProps =  originalPropsTemp;
+            const originalProps = originalPropsTemp;
 
             /*
                 Different cases:
@@ -149,18 +150,18 @@ export class MappedTypeNodeParser implements SubNodeParser {
             */
 
             // @ts-ignore
-            const toPick : Array = (node.typeParameter && node.typeParameter.constraint &&
-                    // @ts-ignore
-                    node.typeParameter.constraint.typeName) ?
+            const toPick: Array = (node.typeParameter && node.typeParameter.constraint &&
+                // @ts-ignore
+                node.typeParameter.constraint.typeName) ?
                 // @ts-ignore
                 context.getParameterProperties(node.typeParameter.constraint.typeName.text, true) :
                 // @ts-ignore
                 (node.typeParameter && node.typeParameter.constraint &&
-                // @ts-ignore
-                 node.typeParameter.constraint.type && node.typeParameter.constraint.type.typeName) ?
-                // @ts-ignore
-                context.getParameterProperties(node.typeParameter.constraint.type.typeName.text, true) :
-                [];
+                    // @ts-ignore
+                    node.typeParameter.constraint.type && node.typeParameter.constraint.type.typeName) ?
+                    // @ts-ignore
+                    context.getParameterProperties(node.typeParameter.constraint.type.typeName.text, true) :
+                    [];
 
             //If node.type (The value of the map) is computed: Pick<T, K>, Array<K>
             //This will not work
