@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "object",
+          "properties": {
+            "test": {
+              "type": "string",
+              "enum": [
+                "one",
+                "two",
+                "three"
+              ]
+            }
+          },
+          "required": [
+            "test"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "foo"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/MyObject"
+    }
+  ]
+}
