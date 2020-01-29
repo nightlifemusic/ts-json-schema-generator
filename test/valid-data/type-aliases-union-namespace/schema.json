@@ -2,7 +2,7 @@
     "type": "object",
     "properties": {
         "direction": {
-            "allOf": [{"$ref": "#/definitions/Cardinal"}]
+            "$ref": "#/definitions/Cardinal"
         }
     },
     "required": [
@@ -19,5 +19,5 @@
             "type": "string"
         }
     },
-    "$schema": "http://json-schema.org/draft-06/schema#"
+    "$schema": "http://json-schema.org/draft-07/schema#"
 }

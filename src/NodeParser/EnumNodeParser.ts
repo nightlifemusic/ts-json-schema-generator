@@ -4,35 +4,31 @@ import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { EnumType, EnumValue } from "../Type/EnumType";
 import { isHidden } from "../Utils/isHidden";
+import { getKey } from "../Utils/nodeKey";
 
 function isMemberHidden(member: ts.EnumMember) {
     if (!("symbol" in member)) {
         return false;
     }
 
-    const symbol: ts.Symbol = (<any>member).symbol;
+    const symbol: ts.Symbol = (member as any).symbol;
     return isHidden(symbol);
 }
 
 export class EnumNodeParser implements SubNodeParser {
-    public constructor(
-        private typeChecker: ts.TypeChecker,
-    ) {
-    }
+    public constructor(private typeChecker: ts.TypeChecker) {}
 
     public supportsNode(node: ts.EnumDeclaration | ts.EnumMember): boolean {
         return node.kind === ts.SyntaxKind.EnumDeclaration || node.kind === ts.SyntaxKind.EnumMember;
     }
     public createType(node: ts.EnumDeclaration | ts.EnumMember, context: Context): BaseType {
-        const members: ts.EnumMember[] = node.kind === ts.SyntaxKind.EnumDeclaration ?
-            (node as ts.EnumDeclaration).members as any :
-            [node as ts.EnumMember];
+        const members = node.kind === ts.SyntaxKind.EnumDeclaration ? node.members.slice() : [node];
 
         return new EnumType(
-            `enum-${node.getFullStart()}`,
+            `enum-${getKey(node, context)}`,
             members
                 .filter((member: ts.EnumMember) => !isMemberHidden(member))
-                .map((member: ts.EnumMember, index: number) => this.getMemberValue(member, index)),
+                .map((member, index) => this.getMemberValue(member, index))
         );
     }
 

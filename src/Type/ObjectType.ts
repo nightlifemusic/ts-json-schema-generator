@@ -1,21 +1,14 @@
 import { BaseType } from "./BaseType";
+import { strip } from "../Utils/String";
 
 export class ObjectProperty {
-    public constructor(
-        private name: string,
-        private type: BaseType,
-        private required: boolean,
-    ) {
-    }
+    public constructor(private name: string, private type: BaseType, private required: boolean) {}
 
     public getName(): string {
-        return this.name;
+        return strip(this.name);
     }
     public getType(): BaseType {
         return this.type;
-    }
-    public setType(type: BaseType): void {
-        this.type = type;
     }
     public isRequired(): boolean {
         return this.required;
@@ -23,13 +16,11 @@ export class ObjectProperty {
 }
 
 export class ObjectType extends BaseType {
-    private maxProperties?: number;
-
     public constructor(
         private id: string,
-        private baseTypes: BaseType[],
-        private properties: ObjectProperty[],
-        private additionalProperties: BaseType|boolean,
+        private baseTypes: readonly BaseType[],
+        private properties: readonly ObjectProperty[],
+        private additionalProperties: BaseType | boolean
     ) {
         super();
     }
@@ -38,17 +29,13 @@ export class ObjectType extends BaseType {
         return this.id;
     }
 
-    public getBaseTypes(): BaseType[] {
+    public getBaseTypes(): readonly BaseType[] {
         return this.baseTypes;
     }
-    public getProperties(): ObjectProperty[] {
+    public getProperties(): readonly ObjectProperty[] {
         return this.properties;
     }
-    public getAdditionalProperties(): BaseType|boolean {
+    public getAdditionalProperties(): BaseType | boolean {
         return this.additionalProperties;
-    }
-
-    public setMaxProperties(maxProperties: number): void {
-        this.maxProperties = maxProperties;
     }
 }

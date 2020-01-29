@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "RootNamespace.Def": {
             "type": "object",
@@ -58,5 +58,5 @@
             "additionalProperties": false
         }
     },
-    "allOf": [{"$ref": "#/definitions/RootNamespace.Def"}]
+    "$ref": "#/definitions/RootNamespace.Def"
 }

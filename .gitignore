@@ -1,3 +1,4 @@
-node_modules/
+/*.ts
+coverage/
 dist/
-.gitignore
+node_modules/

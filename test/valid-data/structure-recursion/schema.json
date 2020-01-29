@@ -1,24 +1,11 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "MyObject": {
             "type": "object",
             "properties": {
                 "sub": {
-                    "type": "object",
-                    "properties": {
-                        "propA": {
-                            "type": "number"
-                        },
-                        "propB": {
-                            "$ref": "#/definitions/interface-0"
-                        }
-                    },
-                    "required": [
-                        "propA",
-                        "propB"
-                    ],
-                    "additionalProperties": false
+                    "$ref": "#/definitions/MySubObject"
                 }
             },
             "required": [
@@ -26,14 +13,14 @@
             ],
             "additionalProperties": false
         },
-        "interface-0": {
+        "MySubObject": {
             "type": "object",
             "properties": {
                 "propA": {
                     "type": "number"
                 },
                 "propB": {
-                    "$ref": "#/definitions/interface-0"
+                    "$ref": "#/definitions/MySubObject"
                 }
             },
             "required": [
@@ -43,5 +30,5 @@
             "additionalProperties": false
         }
     },
-    "allOf": [{"$ref": "#/definitions/MyObject"}]
+    "$ref": "#/definitions/MyObject"
 }

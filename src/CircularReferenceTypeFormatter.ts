@@ -1,15 +1,13 @@
 import { Definition } from "./Schema/Definition";
 import { SubTypeFormatter } from "./SubTypeFormatter";
 import { BaseType } from "./Type/BaseType";
+import { uniqueArray } from "./Utils/uniqueArray";
 
 export class CircularReferenceTypeFormatter implements SubTypeFormatter {
     private definition = new Map<BaseType, Definition>();
     private children = new Map<BaseType, BaseType[]>();
 
-    public constructor(
-        private childTypeFormatter: SubTypeFormatter,
-    ) {
-    }
+    public constructor(private childTypeFormatter: SubTypeFormatter) {}
 
     public supportsType(type: BaseType): boolean {
         return this.childTypeFormatter.supportsType(type);
@@ -32,6 +30,6 @@ export class CircularReferenceTypeFormatter implements SubTypeFormatter {
         const children: BaseType[] = [];
         this.children.set(type, children);
         children.push(...this.childTypeFormatter.getChildren(type));
-        return children;
+        return uniqueArray(children);
     }
 }

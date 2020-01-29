@@ -1,6 +1,6 @@
 {
   "name": "ts-json-schema-generator",
-  "version": "0.22.0",
+  "version": "0.58.1",
   "description": "Generate JSON schema from your Typescript sources",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,12 +21,7 @@
     "type": "git",
     "url": "https://github.com/vega/ts-json-schema-generator.git"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
-  ],
+  "license": "MIT",
   "keywords": [
     "ts",
     "typescript",
@@ -38,37 +33,69 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "@nightlife/nl-shared-types": "^4.0.16",
-    "@nightlife/nl-skeletor-rpc": "^6.0.7",
-    "@types/lodash": "^4.14.108",
-    "commander": "~2.15.0",
-    "glob": "~7.1.2",
+    "@types/json-schema": "^7.0.4",
+    "commander": "~4.1.0",
+    "glob": "~7.1.6",
     "json-stable-stringify": "^1.0.1",
-    "lodash": "^4.17.10",
-    "ts-node": "^5.0.1",
-    "typescript": "~2.9.2"
+    "typescript": "~3.7.5"
   },
   "devDependencies": {
-    "@types/assertion-error": "^1.1.0",
-    "@types/chai": "^4.1.2",
-    "@types/glob": "^5.0.35",
+    "@types/glob": "^7.1.1",
+    "@types/jest": "^24.9.1",
     "@types/json-stable-stringify": "^1.0.32",
-    "@types/mocha": "^2.2.48",
-    "@types/node": "^9.4.7",
-    "ajv": "~6.2.1",
-    "chai": "~4.1.2",
-    "mocha": "~5.0.4",
-    "source-map-support": "~0.5.3",
-    "tslint": "~5.9.1"
+    "@types/node": "^13.5.0",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
+    "ajv": "~6.11.0",
+    "chai": "~4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^25.1.0",
+    "jest-junit": "^10.0.0",
+    "prettier": "^1.19.1",
+    "source-map-support": "~0.5.16",
+    "ts-jest": "^25.0.0",
+    "ts-node": "^8.6.2"
   },
   "scripts": {
-    "prepublish": "rm -rf dist/* && npm run build",
-    "preversion": "npm run lint && npm run test",
-    "build": "tsc -p .",
-    "watch": "tsc -p . -w",
-    "lint": "tslint -p .",
-    "test": "tsc -p . && mocha -t 10000 --require source-map-support/register --recursive dist/test",
-    "debug": "ts-node --inspect=19248 --debug-brk ts-json-schema-generator.ts",
+    "prepublishOnly": "yarn build",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "eslint '{src,test,factory}/**/*.ts'",
+    "format": "yarn lint --fix",
+    "test": "jest test/ --verbose",
+    "test:fast": "FAST_TEST=1 jest test/ --verbose",
+    "debug": "node -r ts-node/register --inspect-brk ts-json-schema-generator.ts",
     "run": "ts-node ts-json-schema-generator.ts"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "test-runtime",
+      "<rootDir>/build",
+      "_site",
+      "src",
+      "dist"
+    ],
+    "coverageReporters": [
+      "html",
+      "cobertura"
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": false,
+    "testEnvironment": "node"
   }
 }

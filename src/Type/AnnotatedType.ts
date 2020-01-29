@@ -1,20 +1,17 @@
 import { BaseType } from "./BaseType";
+import { hash } from "../Utils/nodeKey";
 
 export interface Annotations {
     [name: string]: any;
 }
 
 export class AnnotatedType extends BaseType {
-    public constructor(
-        private type: BaseType,
-        private annotations: Annotations,
-        private nullable: boolean,
-    ) {
+    public constructor(private type: BaseType, private annotations: Annotations, private nullable: boolean) {
         super();
     }
 
     public getId(): string {
-        return this.type.getId();
+        return this.type.getId() + hash([this.isNullable(), this.annotations]);
     }
 
     public getType(): BaseType {

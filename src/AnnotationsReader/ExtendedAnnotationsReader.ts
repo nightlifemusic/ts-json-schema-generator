@@ -1,10 +1,11 @@
 import * as ts from "typescript";
 import { Annotations } from "../Type/AnnotatedType";
+import { symbolAtNode } from "../Utils/symbolAtNode";
 import { BasicAnnotationsReader } from "./BasicAnnotationsReader";
 
 export class ExtendedAnnotationsReader extends BasicAnnotationsReader {
-    constructor(private typeChecker: ts.TypeChecker) {
-        super();
+    public constructor(private typeChecker: ts.TypeChecker, extraTags?: Set<string>) {
+        super(extraTags);
     }
 
     public getAnnotations(node: ts.Node): Annotations | undefined {
@@ -17,7 +18,7 @@ export class ExtendedAnnotationsReader extends BasicAnnotationsReader {
     }
 
     public isNullable(node: ts.Node): boolean {
-        const symbol: ts.Symbol = (node as any).symbol;
+        const symbol = symbolAtNode(node);
         if (!symbol) {
             return false;
         }
@@ -27,13 +28,12 @@ export class ExtendedAnnotationsReader extends BasicAnnotationsReader {
             return false;
         }
 
-        const jsDocTag: ts.JSDocTagInfo | undefined = jsDocTags.find(
-            (tag: ts.JSDocTagInfo) => tag.name === "nullable");
+        const jsDocTag: ts.JSDocTagInfo | undefined = jsDocTags.find((tag: ts.JSDocTagInfo) => tag.name === "nullable");
         return !!jsDocTag;
     }
 
     private getDescriptionAnnotation(node: ts.Node): Annotations | undefined {
-        const symbol: ts.Symbol = (node as any).symbol;
+        const symbol = symbolAtNode(node);
         if (!symbol) {
             return undefined;
         }
@@ -43,10 +43,10 @@ export class ExtendedAnnotationsReader extends BasicAnnotationsReader {
             return undefined;
         }
 
-        return {description: comments.map((comment: ts.SymbolDisplayPart) => comment.text).join(" ")};
+        return { description: comments.map(comment => comment.text).join(" ") };
     }
     private getTypeAnnotation(node: ts.Node): Annotations | undefined {
-        const symbol: ts.Symbol = (node as any).symbol;
+        const symbol = symbolAtNode(node);
         if (!symbol) {
             return undefined;
         }
@@ -56,12 +56,11 @@ export class ExtendedAnnotationsReader extends BasicAnnotationsReader {
             return undefined;
         }
 
-        const jsDocTag: ts.JSDocTagInfo | undefined = jsDocTags.find(
-            (tag: ts.JSDocTagInfo) => tag.name === "asType" || tag.name === "TJS-type");
+        const jsDocTag = jsDocTags.find(tag => tag.name === "asType");
         if (!jsDocTag || !jsDocTag.text) {
             return undefined;
         }
 
-        return {type: jsDocTag.text};
+        return { type: jsDocTag.text };
     }
 }

@@ -1,17 +1,22 @@
 import * as ts from "typescript";
 import { AnnotationsReader } from "../AnnotationsReader";
 import { Annotations } from "../Type/AnnotatedType";
+import { symbolAtNode } from "../Utils/symbolAtNode";
 
 export class BasicAnnotationsReader implements AnnotationsReader {
-    private static textTags: string[] = [
+    private static textTags = new Set<string>([
         "title",
         "description",
 
         "format",
         "pattern",
-        "regexp"
-    ];
-    private static jsonTags: string[] = [
+
+        // New since draft-07:
+        "$comment",
+        "contentMediaType",
+        "contentEncoding",
+    ]);
+    private static jsonTags = new Set<string>([
         "minimum",
         "exclusiveMinimum",
 
@@ -23,6 +28,9 @@ export class BasicAnnotationsReader implements AnnotationsReader {
         "minLength",
         "maxLength",
 
+        "minProperties",
+        "maxProperties",
+
         "minItems",
         "maxItems",
         "uniqueItems",
@@ -33,10 +41,19 @@ export class BasicAnnotationsReader implements AnnotationsReader {
         "examples",
 
         "default",
-    ];
+
+        // New since draft-07:
+        "if",
+        "then",
+        "else",
+        "readOnly",
+        "writeOnly",
+    ]);
+
+    public constructor(private extraTags?: Set<string>) {}
 
     public getAnnotations(node: ts.Node): Annotations | undefined {
-        const symbol: ts.Symbol = (node as any).symbol;
+        const symbol = symbolAtNode(node);
         if (!symbol) {
             return undefined;
         }
@@ -46,7 +63,7 @@ export class BasicAnnotationsReader implements AnnotationsReader {
             return undefined;
         }
 
-        const annotations: Annotations = jsDocTags.reduce((result: Annotations, jsDocTag: ts.JSDocTagInfo) => {
+        const annotations = jsDocTags.reduce((result: Annotations, jsDocTag) => {
             const value = this.parseJsDocTag(jsDocTag);
             if (value !== undefined) {
                 result[jsDocTag.name] = value;
@@ -62,16 +79,14 @@ export class BasicAnnotationsReader implements AnnotationsReader {
             return undefined;
         }
 
-        if (BasicAnnotationsReader.textTags.indexOf(jsDocTag.name) >= 0) {
-            if(jsDocTag.name === "regexp") {
-                // filter out the zero width joiner that allows you to use '*/' in the regex which screws with the comment if you don't put the zero width joiner (&#8205;) in it.
-                jsDocTag.text = jsDocTag.text.replace(/&#8205;/g, '')
-            }
-
+        if (BasicAnnotationsReader.textTags.has(jsDocTag.name)) {
             return jsDocTag.text;
-        } else if (BasicAnnotationsReader.jsonTags.indexOf(jsDocTag.name) >= 0) {
+        } else if (BasicAnnotationsReader.jsonTags.has(jsDocTag.name)) {
             return this.parseJson(jsDocTag.text);
+        } else if (this.extraTags?.has(jsDocTag.name)) {
+            return this.parseJson(jsDocTag.text) ?? jsDocTag.text;
         } else {
+            // Unknown jsDoc tag.
             return undefined;
         }
     }

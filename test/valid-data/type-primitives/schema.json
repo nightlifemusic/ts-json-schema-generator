@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "MyObject": {
             "type": "object",
@@ -30,15 +30,13 @@
                 "boolean",
                 "number",
                 "string",
-
                 "integer",
                 "double",
-
                 "decimal",
                 "datetime"
             ],
             "additionalProperties": false
         }
     },
-    "allOf": [{"$ref": "#/definitions/MyObject"}]
+    "$ref": "#/definitions/MyObject"
 }

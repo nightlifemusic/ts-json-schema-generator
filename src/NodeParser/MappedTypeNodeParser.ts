@@ -1,196 +1,129 @@
 import * as ts from "typescript";
-import { DefinitionType, LiteralType, UnionType } from "../..";
+import { LogicError } from "../Error/LogicError";
 import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
+import { ArrayType } from "../Type/ArrayType";
 import { BaseType } from "../Type/BaseType";
+import { EnumType, EnumValue } from "../Type/EnumType";
+import { LiteralType } from "../Type/LiteralType";
+import { NumberType } from "../Type/NumberType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
-import * as _ from 'lodash';
+import { StringType } from "../Type/StringType";
+import { UnionType } from "../Type/UnionType";
+import { derefAnnotatedType, derefType } from "../Utils/derefType";
+import { getKey } from "../Utils/nodeKey";
+import { preserveAnnotation } from "../Utils/preserveAnnotation";
+import { removeUndefined } from "../Utils/removeUndefined";
 
 export class MappedTypeNodeParser implements SubNodeParser {
-    public constructor(
-        private typeChecker: ts.TypeChecker,
-        private childNodeParser: NodeParser,
-    ) {
-    }
+    public constructor(private childNodeParser: NodeParser) {}
 
     public supportsNode(node: ts.MappedTypeNode): boolean {
         return node.kind === ts.SyntaxKind.MappedType;
     }
 
     public createType(node: ts.MappedTypeNode, context: Context): BaseType {
-        return new ObjectType(
-            `indexed-type-${node.getFullStart()}`,
-            [],
-            this.getProperties(node, context),
-            false,
-        );
+        const constraintType = this.childNodeParser.createType(node.typeParameter.constraint!, context);
+        const keyListType = derefType(constraintType);
+        const id = `indexed-type-${getKey(node, context)}`;
+
+        if (keyListType instanceof UnionType) {
+            // Key type resolves to a set of known properties
+            return new ObjectType(
+                id,
+                [],
+                this.getProperties(node, keyListType, context),
+                this.getAdditionalProperties(node, keyListType, context)
+            );
+        } else if (keyListType instanceof LiteralType) {
+            // Key type resolves to single known property
+            return new ObjectType(id, [], this.getProperties(node, new UnionType([keyListType]), context), false);
+        } else if (keyListType instanceof StringType) {
+            // Key type widens to `string`
+            return new ObjectType(id, [], [], this.childNodeParser.createType(node.type!, context));
+        } else if (keyListType instanceof NumberType) {
+            return new ArrayType(
+                this.childNodeParser.createType(node.type!, this.createSubContext(node, keyListType, context))
+            );
+        } else if (keyListType instanceof EnumType) {
+            return new ObjectType(id, [], this.getValues(node, keyListType, context), false);
+        } else {
+            throw new LogicError(
+                // eslint-disable-next-line max-len
+                `Unexpected key type "${constraintType.getId()}" for type "${node.getText()}" (expected "UnionType" or "StringType")`
+            );
+        }
     }
 
-    private getProperties(node: ts.MappedTypeNode, context: Context): ObjectProperty[] {
-
-
-        if (context.hasParameters()) { //At least 1 parameter.
-            // @ts-ignore // have to ignore, as NodeObject is not exported from typescript at this point
-
-
-
-            /*
-                In ts.MappedTypeNode, type property describes the value type of the map.
-
-                So far we've identified that node.type.objectType is only defined if node.type is of IndexedAccessType
-                Example of such node is:
-                {
-                    [P in keyof K]?: K[P];
-                }
-                K[P] is of type IndexedAccessType.
-
-                ts.IndexedAccessType has property "objectType" which describes the object being accessed via index (i.e. K).
-                In most case it will be a typeReference to an interface.
-
-                If node.type is an IndexedAccessType we can safely assume that there will only be a single parameter.
-                Also we can assume that properties will be the properties of the objectType.
-            */
-
-            // const originalProps = (context.getParameters().length == 1 && )
-
-            let originalPropsTemp;
-            // @ts-ignore
-            if (node.type && node.type.objectType) { //IndexAccessType
-                // @ts-ignore
-                originalPropsTemp = context.getParameterProperties(node.type.objectType.typeName.text);
-                // @ts-ignore
-            } else if (node.type && node.type.typeArguments && node.type.typeName) { //Reference with type arguments
-
-                /*
-                    {
-                        [K in keyof T]: Array<K>
-                    }
-                */
-                    // @ts-ignore
-                if (node.type.typeArguments.length == 2) {
-                    /*
-                        {
-                            [K in keyof T]: Pick<T, K>
-                        }
-                    */
-                   // @ts-ignore
-                    if (node.typeParameter.constraint && node.typeParameter.constraint.type) {
-                        let OriginalArg = _.cloneDeep(context.getArguments()[0]) //clone it
-                        // @ts-ignore
-                        originalPropsTemp = context.getParameterProperties(node.typeParameter.constraint.type.typeName.text);
-                        originalPropsTemp.forEach((props: ObjectProperty) => {
-                            let subContext = new Context();
-                            subContext.pushArgument(OriginalArg);
-                            subContext.pushArgument(new LiteralType(props.getName()))
-                            // @ts-ignore
-                            node.type.typeArguments.forEach((typeArg: ts.Node) => {
-                                // @ts-ignore
-                                subContext.pushParameter(typeArg.typeName.text);
-                            })
-                            // @ts-ignore
-                            props.setType(this.childNodeParser.createType(node.type!, subContext));
-                        })
-
-                    } else {
-                        // @ts-ignore
-                        originalPropsTemp = context.getParameterProperties(node.typeParameter.constraint!.typeName.text, false, this.childNodeParser.createType(node.type, context));
-                    }
-
-                } else {
-                    originalPropsTemp = context.getParameterProperties(node.typeParameter.constraint.type.typeName.text);
-                }
-                // @ts-ignore
-            } else if (node.type && node.type.typeName) { //Reference without type arguments
-
-                /*
-                    Add another else if statement checking for premitive types such as string, number, or literal
-                */
-
-                /*
-                    In ts.MappedTypeNode
-                    E.g.
-                    {
-                        [P in K]: T;
-                    }
-
-                    node.typeParameter.name is P
-                    and node.typeParameter.constraint.typeName is K.
-                */
-                // @ts-ignore
-                originalPropsTemp = context.getParameterProperties(node.typeParameter.constraint!.typeName.text);
-            } else { originalPropsTemp = []; }
-
-            const originalProps =  originalPropsTemp;
-
-            /*
-                Different cases:
-                const type CASE1<T> = {
-                    [P in keyof IntaFace]: T
-                }
-                In this case node.type will be TypeReference
-
-                const type CASE2<T> = {
-                    [P in keyof T]: string
-                }
-                In this case node.type will be stringtype.
-
-                const type Record<K extends string, T> = {
-                    [P in K]: T
-                }
-                In this case node.type will be TypeReference
-
-                const type CASE4<T> = {
-                    [P in keyof T]: AnInterface['interfaceProp']
+    private getProperties(node: ts.MappedTypeNode, keyListType: UnionType, context: Context): ObjectProperty[] {
+        return keyListType
+            .getTypes()
+            .filter(type => type instanceof LiteralType)
+            .reduce((result: ObjectProperty[], key: LiteralType) => {
+                const propertyType = this.childNodeParser.createType(
+                    node.type!,
+                    this.createSubContext(node, key, context)
+                );
+                let newType = derefAnnotatedType(propertyType);
+                let hasUndefined = false;
+                if (newType instanceof UnionType) {
+                    const { newType: newType_, numRemoved } = removeUndefined(newType);
+                    hasUndefined = numRemoved > 0;
+                    newType = newType_;
                 }
 
-                const type CASE5<K, T, Y> = {
-                    [P in K]: T | Y;
-                }
-            */
+                const objectProperty = new ObjectProperty(
+                    key.getValue().toString(),
+                    preserveAnnotation(propertyType, newType),
+                    !node.questionToken && !hasUndefined
+                );
 
-            // @ts-ignore
-            const toPick : Array = (node.typeParameter && node.typeParameter.constraint &&
-                    // @ts-ignore
-                    node.typeParameter.constraint.typeName) ?
-                // @ts-ignore
-                context.getParameterProperties(node.typeParameter.constraint.typeName.text, true) :
-                // @ts-ignore
-                (node.typeParameter && node.typeParameter.constraint &&
-                // @ts-ignore
-                 node.typeParameter.constraint.type && node.typeParameter.constraint.type.typeName) ?
-                // @ts-ignore
-                context.getParameterProperties(node.typeParameter.constraint.type.typeName.text, true) :
-                [];
+                result.push(objectProperty);
+                return result;
+            }, []);
+    }
 
-            //If node.type (The value of the map) is computed: Pick<T, K>, Array<K>
-            //This will not work
-            // @ts-ignore
-            return originalProps.filter((p: any) => {
-                // @ts-ignore // includes only included in ES2017 target, not ES2015
-                return toPick.includes(p.name);
-            }).map((p: any) => {
-                p.required = !node.questionToken; // this is for partial
-                return p;
-            });
+    private getValues(node: ts.MappedTypeNode, keyListType: EnumType, context: Context): ObjectProperty[] {
+        return keyListType
+            .getValues()
+            .filter((value: EnumValue) => !!value)
+            .map(
+                (value: EnumValue) =>
+                    new ObjectProperty(
+                        value!.toString(),
+                        this.childNodeParser.createType(
+                            node.type!,
+                            this.createSubContext(node, new LiteralType(value!), context)
+                        ),
+                        !node.questionToken
+                    )
+            );
+    }
 
-
+    private getAdditionalProperties(
+        node: ts.MappedTypeNode,
+        keyListType: UnionType,
+        context: Context
+    ): BaseType | false {
+        const key = keyListType.getTypes().filter(type => !(type instanceof LiteralType))[0];
+        if (key) {
+            return this.childNodeParser.createType(node.type!, this.createSubContext(node, key, context));
         } else {
-            const type: any = this.typeChecker.getTypeFromTypeNode((<any>node.typeParameter.constraint));
-            if (type.types) {
-                return type.types.reduce((result: ObjectProperty[], t: any) => {
-                    const createdType = this.childNodeParser.createType(node.type!, context);
-
-                    const objectProperty = new ObjectProperty(
-                        t.value,
-                        createdType,
-                        !node.questionToken,
-                    );
-
-                    result.push(objectProperty);
-                    return result;
-                }, []);
-            }
+            return false;
         }
-        return [];
+    }
+
+    private createSubContext(node: ts.MappedTypeNode, key: LiteralType | StringType, parentContext: Context): Context {
+        const subContext = new Context(node);
+
+        parentContext.getParameters().forEach(parentParameter => {
+            subContext.pushParameter(parentParameter);
+            subContext.pushArgument(parentContext.getArgument(parentParameter));
+        });
+
+        subContext.pushParameter(node.typeParameter.name.text);
+        subContext.pushArgument(key);
+
+        return subContext;
     }
 }

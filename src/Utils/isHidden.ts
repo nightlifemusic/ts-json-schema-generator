@@ -1,4 +1,5 @@
 import * as ts from "typescript";
+import { symbolAtNode } from "./symbolAtNode";
 
 export function isHidden(symbol: ts.Symbol): boolean {
     const jsDocTags: ts.JSDocTagInfo[] = symbol.getJsDocTags();
@@ -6,13 +7,12 @@ export function isHidden(symbol: ts.Symbol): boolean {
         return false;
     }
 
-    const jsDocTag: ts.JSDocTagInfo | undefined = jsDocTags.find(
-        (tag: ts.JSDocTagInfo) => tag.name === "hide");
+    const jsDocTag: ts.JSDocTagInfo | undefined = jsDocTags.find((tag: ts.JSDocTagInfo) => tag.name === "hidden");
     return !!jsDocTag;
 }
 
 export function isNodeHidden(node: ts.Node): boolean | null {
-    const symbol: ts.Symbol = (node as any).symbol;
+    const symbol = symbolAtNode(node);
     if (!symbol) {
         return null;
     }
@@ -23,8 +23,7 @@ export function isNodeHidden(node: ts.Node): boolean | null {
 export function referenceHidden(typeChecker: ts.TypeChecker) {
     return function(node: ts.Node) {
         if (node.kind === ts.SyntaxKind.TypeReference) {
-            return isHidden(typeChecker.getSymbolAtLocation(
-                (<ts.TypeReferenceNode> node).typeName)!);
+            return isHidden(typeChecker.getSymbolAtLocation((node as ts.TypeReferenceNode).typeName)!);
         }
 
         return isNodeHidden(node);

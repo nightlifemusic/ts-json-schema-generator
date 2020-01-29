@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es2015",
+        "target": "es2017",
         "module": "commonjs",
         "moduleResolution": "node",
         "isolatedModules": false,
@@ -20,22 +20,20 @@
         "pretty": true,
         "watch": false,
         "typeRoots": ["node_modules/@types"],
-        "sourceRoot": "/src",
-        "outDir": "dist"
+        "sourceRoot": "src",
+        "outDir": "dist",
+        "incremental": true
     },
-    "include": [
-        "index.ts",
+    "files": [
         "ts-json-schema-generator.ts",
-        "factory/**/*.ts",
-        "src/**/*.ts",
-        "test/*.ts",
-        "test/unit/**/*.ts"
+        "index.ts"
+    ],
+    "include": [
+        "./src/**/*.ts",
+        "./factory/**/*.ts",
+        "./test/**.ts"
     ],
     "exclude": [
-        "node_modules",
-        "test/valid-data",
-        "test/invalid-data"
-    ],
-    "compileOnSave": true,
-    "buildOnSave": false
+        "dist"
+    ]
 }

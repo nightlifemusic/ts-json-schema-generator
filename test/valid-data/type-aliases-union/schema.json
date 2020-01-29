@@ -1,40 +1,37 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
-        "MyObject" : {
-            "additionalProperties": false,
-            "type" : "object",
-            "properties" : {
-                "a" : {
-                    "type" : "number"
-                }
-            },
-            "required" : [
-                "a"
-            ]
-        },
-        "MyOtherObject" : {
-            "additionalProperties": false,
-            "type" : "object",
-            "properties" : {
-                "b" : {
-                    "type" : "string"
-                }
-            },
-            "required" : [
-                "b"
-            ]
-        },
         "MyUnion": {
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/MyObject"
-                },
-                {
-                    "$ref": "#/definitions/MyOtherObject"
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "$ref": "#/definitions/MyObject"
+                    }
+                ]
+            }
+        },
+        "MyObject": {
+            "type": "object",
+            "properties": {
+                "array": {
+                    "type": "array",
+                    "items": {
+                        "type": [
+                            "string",
+                            "number"
+                        ]
+                    }
                 }
-            ]
+            },
+            "required": [
+                "array"
+            ],
+            "additionalProperties": false
         }
     },
-    "allOf": [{"$ref": "#/definitions/MyUnion"}]
+    "$ref": "#/definitions/MyUnion"
 }

@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "ExportInterface": {
             "type": "object",
@@ -25,6 +25,18 @@
             },
             "required": [
                 "privateValue"
+            ],
+            "additionalProperties": false
+        },
+        "PublicAnonymousTypeLiteral": {
+            "type": "object",
+            "properties": {
+                "publicValue": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "publicValue"
             ],
             "additionalProperties": false
         }
@@ -75,6 +87,21 @@
         },
         "mixedAlias": {
             "$ref": "#/definitions/MixedAlias"
+        },
+        "publicAnonymousTypeLiteral": {
+            "$ref": "#/definitions/PublicAnonymousTypeLiteral"
+        },
+        "privateAnonymousTypeLiteral": {
+            "type": "object",
+            "properties": {
+                "privateValue": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "privateValue"
+            ],
+            "additionalProperties": false
         }
     },
     "required": [
@@ -83,7 +110,9 @@
         "privateInterface",
         "privateAlias",
         "mixedInterface",
-        "mixedAlias"
+        "mixedAlias",
+        "publicAnonymousTypeLiteral",
+        "privateAnonymousTypeLiteral"
     ],
     "additionalProperties": false
 }

@@ -1,15 +1,16 @@
 import { BaseType } from "./BaseType";
 
 export class DefinitionType extends BaseType {
-    public constructor(
-        private name: string,
-        private type: BaseType,
-    ) {
+    public constructor(private name: string | undefined, private type: BaseType) {
         super();
     }
 
     public getId(): string {
-        return this.name;
+        return "def-" + this.type.getId();
+    }
+
+    public getName() {
+        return this.name || super.getName();
     }
 
     public getType(): BaseType {

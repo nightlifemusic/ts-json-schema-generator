@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {},
     "type": "object",
     "properties": {
@@ -83,6 +83,30 @@
                 "privateValue"
             ],
             "additionalProperties": false
+        },
+        "publicAnonymousTypeLiteral": {
+            "type": "object",
+            "properties": {
+                "publicValue": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "publicValue"
+            ],
+            "additionalProperties": false
+        },
+        "privateAnonymousTypeLiteral": {
+            "type": "object",
+            "properties": {
+                "privateValue": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "privateValue"
+            ],
+            "additionalProperties": false
         }
     },
     "required": [
@@ -91,7 +115,9 @@
         "privateInterface",
         "privateAlias",
         "mixedInterface",
-        "mixedAlias"
+        "mixedAlias",
+        "publicAnonymousTypeLiteral",
+        "privateAnonymousTypeLiteral"
     ],
     "additionalProperties": false
 }

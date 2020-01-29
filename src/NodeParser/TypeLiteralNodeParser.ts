@@ -3,59 +3,51 @@ import { Context, NodeParser } from "../NodeParser";
 import { SubNodeParser } from "../SubNodeParser";
 import { BaseType } from "../Type/BaseType";
 import { ObjectProperty, ObjectType } from "../Type/ObjectType";
+import { ReferenceType } from "../Type/ReferenceType";
 import { isHidden } from "../Utils/isHidden";
+import { getKey } from "../Utils/nodeKey";
 
 export class TypeLiteralNodeParser implements SubNodeParser {
-    public constructor(
-        private childNodeParser: NodeParser,
-    ) {
-    }
+    public constructor(private childNodeParser: NodeParser) {}
 
     public supportsNode(node: ts.TypeLiteralNode): boolean {
         return node.kind === ts.SyntaxKind.TypeLiteral;
     }
-    public createType(node: ts.TypeLiteralNode, context: Context): BaseType {
-        return new ObjectType(
-            this.getTypeId(node, context),
-            [],
-            this.getProperties(node, context),
-            this.getAdditionalProperties(node, context),
-        );
+    public createType(node: ts.TypeLiteralNode, context: Context, reference?: ReferenceType): BaseType {
+        const id = this.getTypeId(node, context);
+        if (reference) {
+            reference.setId(id);
+            reference.setName(id);
+        }
+        return new ObjectType(id, [], this.getProperties(node, context), this.getAdditionalProperties(node, context));
     }
 
     private getProperties(node: ts.TypeLiteralNode, context: Context): ObjectProperty[] {
-        return node.members
-            .filter((property: ts.TypeElement) => property.kind === ts.SyntaxKind.PropertySignature)
-            .reduce((result: ObjectProperty[], propertyNode: ts.PropertySignature) => {
-                const propertySymbol: ts.Symbol = (propertyNode as any).symbol;
-                if (isHidden(propertySymbol)) {
-                    return result;
-                }
-                const objectProperty = new ObjectProperty(
-                    propertySymbol.getName(),
-                    this.childNodeParser.createType(propertyNode.type!, context),
-                    !propertyNode.questionToken,
-                );
-
-                result.push(objectProperty);
+        return node.members.filter(ts.isPropertySignature).reduce((result: ObjectProperty[], propertyNode) => {
+            const propertySymbol: ts.Symbol = (propertyNode as any).symbol;
+            if (isHidden(propertySymbol)) {
                 return result;
-            }, []);
+            }
+            const objectProperty = new ObjectProperty(
+                propertySymbol.getName(),
+                this.childNodeParser.createType(propertyNode.type!, context),
+                !propertyNode.questionToken
+            );
+
+            result.push(objectProperty);
+            return result;
+        }, []);
     }
-    private getAdditionalProperties(node: ts.TypeLiteralNode, context: Context): BaseType|false {
-        const properties = node.members
-            .filter((property: ts.TypeElement) => property.kind === ts.SyntaxKind.IndexSignature);
-        if (!properties.length) {
+    private getAdditionalProperties(node: ts.TypeLiteralNode, context: Context): BaseType | false {
+        const indexSignature = node.members.find(ts.isIndexSignatureDeclaration);
+        if (!indexSignature) {
             return false;
         }
 
-        const signature: ts.IndexSignatureDeclaration = properties[0] as ts.IndexSignatureDeclaration;
-        return this.childNodeParser.createType(signature.type!, context);
+        return this.childNodeParser.createType(indexSignature.type!, context);
     }
 
     private getTypeId(node: ts.Node, context: Context): string {
-        const fullName = `structure-${node.getFullStart()}`;
-        const argumentIds = context.getArguments().map((arg: BaseType) => arg.getId());
-
-        return argumentIds.length ? `${fullName}<${argumentIds.join(",")}>` : fullName;
+        return `structure-${getKey(node, context)}`;
     }
 }

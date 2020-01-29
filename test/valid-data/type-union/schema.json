@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "TypeUnion": {
             "type": "object",
@@ -32,7 +32,6 @@
                         ]
                     }
                 },
-
                 "var4": {
                     "type": [
                         "string",
@@ -80,7 +79,6 @@
                 "var1",
                 "var2",
                 "var3",
-
                 "var4",
                 "var5",
                 "var6"
@@ -88,5 +86,5 @@
             "additionalProperties": false
         }
     },
-    "allOf": [{"$ref": "#/definitions/TypeUnion"}]
+    "$ref": "#/definitions/TypeUnion"
 }

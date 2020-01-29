@@ -3,13 +3,12 @@ import { UnknownNodeError } from "./Error/UnknownNodeError";
 import { Context } from "./NodeParser";
 import { SubNodeParser } from "./SubNodeParser";
 import { BaseType } from "./Type/BaseType";
+import { ReferenceType } from "./Type/ReferenceType";
 
 export class ChainNodeParser implements SubNodeParser {
-    public constructor(
-        private typeChecker: ts.TypeChecker,
-        private nodeParsers: SubNodeParser[],
-    ) {
-    }
+    private typeCaches = new WeakMap<ts.Node, Map<string, BaseType>>();
+
+    public constructor(private typeChecker: ts.TypeChecker, private nodeParsers: SubNodeParser[]) {}
 
     public addNodeParser(nodeParser: SubNodeParser): this {
         this.nodeParsers.push(nodeParser);
@@ -17,10 +16,24 @@ export class ChainNodeParser implements SubNodeParser {
     }
 
     public supportsNode(node: ts.Node): boolean {
-        return this.nodeParsers.some((nodeParser: SubNodeParser) => nodeParser.supportsNode(node));
+        return this.nodeParsers.some(nodeParser => nodeParser.supportsNode(node));
     }
-    public createType(node: ts.Node, context: Context): BaseType {
-        return this.getNodeParser(node, context).createType(node, context);
+
+    public createType(node: ts.Node, context: Context, reference?: ReferenceType): BaseType {
+        let typeCache = this.typeCaches.get(node);
+        if (typeCache == null) {
+            typeCache = new Map<string, BaseType>();
+            this.typeCaches.set(node, typeCache);
+        }
+        const contextCacheKey = context.getCacheKey();
+        let type = typeCache.get(contextCacheKey);
+        if (!type) {
+            type = this.getNodeParser(node, context).createType(node, context, reference);
+            if (!(type instanceof ReferenceType)) {
+                typeCache.set(contextCacheKey, type);
+            }
+        }
+        return type;
     }
 
     private getNodeParser(node: ts.Node, context: Context): SubNodeParser {
