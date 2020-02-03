@@ -1,0 +1,30 @@
+{
+    "$ref": "#/definitions/MyObject",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "abc_string": {
+            "additionalProperties": false,
+            "properties": {
+                "a": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "a"
+            ],
+            "type": "object"
+        },
+        "MyObject": {
+            "additionalProperties": false,
+            "properties": {
+                "abc_string": {
+                    "$ref": "#/definitions/abc_string"
+                }
+            },
+            "required": [
+                "abc_string"
+            ],
+            "type": "object"
+        }
+    }
+}
