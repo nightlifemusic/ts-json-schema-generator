@@ -42,7 +42,6 @@ function assertSchema(
         const schema = generator.createSchema(type);
         const expected: any = JSON.parse(readFileSync(resolve(`${basePath}/${relativePath}/schema.json`), "utf8"));
         const actual: any = JSON.parse(JSON.stringify(schema));
-        console.log(JSON.stringify(schema))
 
         // uncomment to write test files
         // writeFileSync(resolve(`${basePath}/${name}/schema.json`), JSON.stringify(schema, null, 4) + "\n", "utf8");
@@ -161,19 +160,19 @@ describe("valid-data", () => {
     // it("type-mapped-exclude", assertSchema("type-mapped-exclude", "MyObject", "extended"));
     // it("type-mapped-double-exclude", assertSchema("type-mapped-double-exclude", "MyObject", "extended"));
     // it("type-mapped-indexed", assertSchema("type-mapped-indexed", "MyObject", "extended"));
-    // it("additional-props", assertSchema("nightlife/additional-props", "MyObject", "extended"));
-    // it("additional-props-multiple-args", assertSchema("nightlife/additional-props-multiple-args", "MyObject", "extended"));
-    // it("additional-props-type", assertSchema("nightlife/additional-props-type", "MyObject", "extended"));
-    // it("any", assertSchema("nightlife/any", "MyObject", "extended"));
-    // it("any-param", assertSchema("nightlife/any-param", "MyObject", "extended"));
-    // it("extended-interface-typearg", assertSchema("nightlife/extended-interface-typearg", "MyObject", "extended"));
-    // it("object", assertSchema("nightlife/object", "MyObject", "extended"));
-    // it("oneof", assertSchema("nightlife/oneof", "MyObject", "extended"));
-    // it("prefixUnaryExpression", assertSchema("nightlife/prefixUnaryExpression", "MyObject", "extended"));
-    // it("record-string", assertSchema("nightlife/record-string", "MyObject", "extended"));
-    // it("record-string-one", assertSchema("nightlife/record-string-one", "MyObject", "extended"));
-    // it("root-definition-type", assertSchema("nightlife/root-definition-type", "MyObject", "extended"));
 
+    it("additional-props", assertSchema("nightlife/additional-props", "MyObject", "extended"));
+    it("additional-props-multiple-args", assertSchema("nightlife/additional-props-multiple-args", "MyObject", "extended"));
+    it("additional-props-type", assertSchema("nightlife/additional-props-type", "MyObject", "extended"));
+    it("any", assertSchema("nightlife/any", "MyObject", "extended"));
+    it("any-param", assertSchema("nightlife/any-param", "MyObject", "extended"));
+    it("extended-interface-typearg", assertSchema("nightlife/extended-interface-typearg", "MyObject", "extended"));
+    it("object", assertSchema("nightlife/object", "MyObject", "extended"));
+    it("oneof", assertSchema("nightlife/oneof", "MyObject", "extended"));
+    it("prefixUnaryExpression", assertSchema("nightlife/prefixUnaryExpression", "MyObject", "extended"));
+    it("record-string", assertSchema("nightlife/record-string", "MyObject", "extended"));
+    it("record-string-one", assertSchema("nightlife/record-string-one", "MyObject", "extended"));
+    it("root-definition-type", assertSchema("nightlife/root-definition-type", "MyObject", "extended"));
     it("type-maps", assertSchema("nightlife/type-maps", "MyObject", "extended"));
     it("type-partial1", assertSchema("nightlife/type-partial1", "MyObject", "extended"));
     it("type-partial2", assertSchema("nightlife/type-partial2", "MyObject", "extended"));

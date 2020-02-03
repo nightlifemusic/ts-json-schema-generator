@@ -19,4 +19,4 @@ export interface IRequestParams<T> {
 
 export interface IRes extends IListsable { }
 
-export interface MyObject extends IRequestParams<IRes> { }
+export interface MyObject extends Partial<IRequestParams<IRes>> { }
