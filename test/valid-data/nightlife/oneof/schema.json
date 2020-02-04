@@ -6,7 +6,7 @@
             "additionalProperties": false,
             "properties": {
                 "OneOfStuff": {
-                    "$ref": "#/definitions/OneOf<IStuff>"
+                    "$ref": "#/definitions/OneOf%3CIStuff%3E"
                 }
             },
             "type": "object"

@@ -43,6 +43,8 @@ function assertSchema(
         const expected: any = JSON.parse(readFileSync(resolve(`${basePath}/${relativePath}/schema.json`), "utf8"));
         const actual: any = JSON.parse(JSON.stringify(schema));
 
+        // console.log(JSON.stringify(schema))
+
         // uncomment to write test files
         // writeFileSync(resolve(`${basePath}/${name}/schema.json`), JSON.stringify(schema, null, 4) + "\n", "utf8");
 
@@ -57,109 +59,109 @@ function assertSchema(
 
 describe("valid-data", () => {
     // TODO: generics recursive
-    // it("simple-object", assertSchema("simple-object", "SimpleObject"));
+    it("simple-object", assertSchema("simple-object", "SimpleObject"));
 
-    // it("interface-single", assertSchema("interface-single", "MyObject"));
-    // it("interface-multi", assertSchema("interface-multi", "MyObject"));
-    // it("interface-recursion", assertSchema("interface-recursion", "MyObject"));
-    // it("interface-extra-props", assertSchema("interface-extra-props", "MyObject"));
-    // it("interface-array", assertSchema("interface-array", "TagArray"));
-    // it("interface-property-dash", assertSchema("interface-property-dash", "MyObject"));
+    it("interface-single", assertSchema("interface-single", "MyObject"));
+    it("interface-multi", assertSchema("interface-multi", "MyObject"));
+    it("interface-recursion", assertSchema("interface-recursion", "MyObject"));
+    it("interface-extra-props", assertSchema("interface-extra-props", "MyObject"));
+    it("interface-array", assertSchema("interface-array", "TagArray"));
+    it("interface-property-dash", assertSchema("interface-property-dash", "MyObject"));
 
-    // it("class-single", assertSchema("class-single", "MyObject"));
-    // it("class-multi", assertSchema("class-multi", "MyObject"));
-    // it("class-recursion", assertSchema("class-recursion", "MyObject"));
-    // it("class-extra-props", assertSchema("class-extra-props", "MyObject"));
-    // it("class-inheritance", assertSchema("class-inheritance", "MyObject"));
-    // it("class-generics", assertSchema("class-generics", "MyObject"));
-    // it("class-jsdoc", assertSchema("class-jsdoc", "MyObject", "extended"));
+    it("class-single", assertSchema("class-single", "MyObject"));
+    it("class-multi", assertSchema("class-multi", "MyObject"));
+    it("class-recursion", assertSchema("class-recursion", "MyObject"));
+    it("class-extra-props", assertSchema("class-extra-props", "MyObject"));
+    it("class-inheritance", assertSchema("class-inheritance", "MyObject"));
+    it("class-generics", assertSchema("class-generics", "MyObject"));
+    it("class-jsdoc", assertSchema("class-jsdoc", "MyObject", "extended"));
 
-    // it("structure-private", assertSchema("structure-private", "MyObject"));
-    // it("structure-anonymous", assertSchema("structure-anonymous", "MyObject"));
-    // it("structure-recursion", assertSchema("structure-recursion", "MyObject"));
-    // it("structure-extra-props", assertSchema("structure-extra-props", "MyObject"));
+    it("structure-private", assertSchema("structure-private", "MyObject"));
+    it("structure-anonymous", assertSchema("structure-anonymous", "MyObject"));
+    it("structure-recursion", assertSchema("structure-recursion", "MyObject"));
+    it("structure-extra-props", assertSchema("structure-extra-props", "MyObject"));
 
-    // it("enums-string", assertSchema("enums-string", "Enum"));
-    // it("enums-number", assertSchema("enums-number", "Enum"));
-    // it("enums-initialized", assertSchema("enums-initialized", "Enum"));
-    // it("enums-compute", assertSchema("enums-compute", "Enum"));
-    // it("enums-mixed", assertSchema("enums-mixed", "Enum"));
-    // it("enums-member", assertSchema("enums-member", "MyObject"));
+    it("enums-string", assertSchema("enums-string", "Enum"));
+    it("enums-number", assertSchema("enums-number", "Enum"));
+    it("enums-initialized", assertSchema("enums-initialized", "Enum"));
+    it("enums-compute", assertSchema("enums-compute", "Enum"));
+    it("enums-mixed", assertSchema("enums-mixed", "Enum"));
+    it("enums-member", assertSchema("enums-member", "MyObject"));
 
-    // it("string-literals", assertSchema("string-literals", "MyObject"));
-    // it("string-literals-inline", assertSchema("string-literals-inline", "MyObject"));
-    // it("string-literals-null", assertSchema("string-literals-null", "MyObject"));
+    it("string-literals", assertSchema("string-literals", "MyObject"));
+    it("string-literals-inline", assertSchema("string-literals-inline", "MyObject"));
+    it("string-literals-null", assertSchema("string-literals-null", "MyObject"));
 
-    // it("namespace-deep-1", assertSchema("namespace-deep-1", "RootNamespace.Def"));
-    // it("namespace-deep-2", assertSchema("namespace-deep-2", "RootNamespace.SubNamespace.HelperA"));
-    // it("namespace-deep-3", assertSchema("namespace-deep-3", "RootNamespace.SubNamespace.HelperB"));
+    it("namespace-deep-1", assertSchema("namespace-deep-1", "RootNamespace.Def"));
+    it("namespace-deep-2", assertSchema("namespace-deep-2", "RootNamespace.SubNamespace.HelperA"));
+    it("namespace-deep-3", assertSchema("namespace-deep-3", "RootNamespace.SubNamespace.HelperB"));
 
-    // it("import-simple", assertSchema("import-simple", "MyObject"));
-    // it("import-exposed", assertSchema("import-exposed", "MyObject"));
-    // it("import-anonymous", assertSchema("import-anonymous", "MyObject"));
+    it("import-simple", assertSchema("import-simple", "MyObject"));
+    it("import-exposed", assertSchema("import-exposed", "MyObject"));
+    it("import-anonymous", assertSchema("import-anonymous", "MyObject"));
 
-    // it("type-aliases-primitive", assertSchema("type-aliases-primitive", "MyString"));
-    // it("type-aliases-object", assertSchema("type-aliases-object", "MyAlias"));
-    // it("type-aliases-mixed", assertSchema("type-aliases-mixed", "MyObject"));
-    // it("type-aliases-union", assertSchema("type-aliases-union", "MyUnion"));
-    // it("type-aliases-anonymous", assertSchema("type-aliases-anonymous", "MyObject"));
-    // it("type-aliases-local-namespace", assertSchema("type-aliases-local-namespace", "MyObject"));
-    // it("type-aliases-recursive-anonymous", assertSchema("type-aliases-recursive-anonymous", "MyAlias"));
-    // it("type-aliases-recursive-export", assertSchema("type-aliases-recursive-export", "MyObject"));
-    // it(
-    //     "type-aliases-recursive-generics-anonymous",
-    //     assertSchema("type-aliases-recursive-generics-anonymous", "MyAlias")
-    // );
-    // it("type-aliases-recursive-generics-export", assertSchema("type-aliases-recursive-generics-export", "MyAlias"));
+    it("type-aliases-primitive", assertSchema("type-aliases-primitive", "MyString"));
+    it("type-aliases-object", assertSchema("type-aliases-object", "MyAlias"));
+    it("type-aliases-mixed", assertSchema("type-aliases-mixed", "MyObject"));
+    it("type-aliases-union", assertSchema("type-aliases-union", "MyUnion"));
+    it("type-aliases-anonymous", assertSchema("type-aliases-anonymous", "MyObject"));
+    it("type-aliases-local-namespace", assertSchema("type-aliases-local-namespace", "MyObject"));
+    it("type-aliases-recursive-anonymous", assertSchema("type-aliases-recursive-anonymous", "MyAlias"));
+    it("type-aliases-recursive-export", assertSchema("type-aliases-recursive-export", "MyObject"));
+    it(
+        "type-aliases-recursive-generics-anonymous",
+        assertSchema("type-aliases-recursive-generics-anonymous", "MyAlias")
+    );
+    it("type-aliases-recursive-generics-export", assertSchema("type-aliases-recursive-generics-export", "MyAlias"));
 
-    // it("type-aliases-tuple", assertSchema("type-aliases-tuple", "MyTuple"));
-    // it("type-aliases-tuple-empty", assertSchema("type-aliases-tuple-empty", "MyTuple"));
-    // it("type-aliases-tuple-optional-items", assertSchema("type-aliases-tuple-optional-items", "MyTuple"));
-    // it("type-aliases-tuple-rest", assertSchema("type-aliases-tuple-rest", "MyTuple"));
-    // it("type-aliases-tuple-only-rest", assertSchema("type-aliases-tuple-only-rest", "MyTuple"));
+    it("type-aliases-tuple", assertSchema("type-aliases-tuple", "MyTuple"));
+    it("type-aliases-tuple-empty", assertSchema("type-aliases-tuple-empty", "MyTuple"));
+    it("type-aliases-tuple-optional-items", assertSchema("type-aliases-tuple-optional-items", "MyTuple"));
+    it("type-aliases-tuple-rest", assertSchema("type-aliases-tuple-rest", "MyTuple"));
+    it("type-aliases-tuple-only-rest", assertSchema("type-aliases-tuple-only-rest", "MyTuple"));
 
-    // it("type-maps", assertSchema("type-maps", "MyObject"));
-    // it("type-primitives", assertSchema("type-primitives", "MyObject"));
-    // it("type-union", assertSchema("type-union", "TypeUnion"));
-    // it("type-union-tagged", assertSchema("type-union-tagged", "Shape"));
-    // it("type-intersection", assertSchema("type-intersection", "MyObject"));
-    // it("type-intersection-conflict", assertSchema("type-intersection-conflict", "MyObject"));
-    // it("type-intersection-partial-conflict", assertSchema("type-intersection-partial-conflict", "MyType"));
-    // it("type-intersection-partial-conflict-ref", assertSchema("type-intersection-partial-conflict", "MyType"));
-    // it("type-intersection-union", assertSchema("type-intersection-union", "MyObject"));
-    // it("type-intersection-additional-props", assertSchema("type-intersection-additional-props", "MyObject"));
-    // it("type-extend", assertSchema("type-extend", "MyObject"));
+    it("type-maps", assertSchema("type-maps", "MyObject"));
+    it("type-primitives", assertSchema("type-primitives", "MyObject"));
+    it("type-union", assertSchema("type-union", "TypeUnion"));
+    it("type-union-tagged", assertSchema("type-union-tagged", "Shape"));
+    it("type-intersection", assertSchema("type-intersection", "MyObject"));
+    it("type-intersection-conflict", assertSchema("type-intersection-conflict", "MyObject"));
+    it("type-intersection-partial-conflict", assertSchema("type-intersection-partial-conflict", "MyType"));
+    it("type-intersection-partial-conflict-ref", assertSchema("type-intersection-partial-conflict", "MyType"));
+    it("type-intersection-union", assertSchema("type-intersection-union", "MyObject"));
+    it("type-intersection-additional-props", assertSchema("type-intersection-additional-props", "MyObject"));
+    it("type-extend", assertSchema("type-extend", "MyObject"));
 
-    // it("type-typeof", assertSchema("type-typeof", "MyType"));
-    // it("type-typeof-value", assertSchema("type-typeof-value", "MyType"));
-    // it("type-typeof-enum", assertSchema("type-typeof-enum", "MyObject"));
+    it("type-typeof", assertSchema("type-typeof", "MyType"));
+    it("type-typeof-value", assertSchema("type-typeof-value", "MyType"));
+    it("type-typeof-enum", assertSchema("type-typeof-enum", "MyObject"));
 
-    // it("type-indexed-access-tuple-1", assertSchema("type-indexed-access-tuple-1", "MyType"));
-    // it("type-indexed-access-tuple-2", assertSchema("type-indexed-access-tuple-2", "MyType"));
-    // it("type-indexed-access-tuple-union", assertSchema("type-indexed-access-tuple-union", "FormLayout"));
-    // it("type-indexed-access-object-1", assertSchema("type-indexed-access-object-1", "MyType"));
-    // it("type-indexed-access-object-2", assertSchema("type-indexed-access-object-2", "MyType"));
-    // it("type-indexed-access-keyof", assertSchema("type-indexed-access-keyof", "MyType"));
-    // it("type-keyof-tuple", assertSchema("type-keyof-tuple", "MyType"));
-    // it("type-keyof-object", assertSchema("type-keyof-object", "MyType"));
-    // it("type-keyof-object-function", assertSchema("type-keyof-object-function", "MyType"));
-    // it("type-mapped-simple", assertSchema("type-mapped-simple", "MyObject"));
-    // it("type-mapped-index", assertSchema("type-mapped-index", "MyObject"));
-    // it("type-mapped-literal", assertSchema("type-mapped-literal", "MyObject"));
-    // it("type-mapped-generic", assertSchema("type-mapped-generic", "MyObject"));
-    // it("type-mapped-native", assertSchema("type-mapped-native", "MyObject"));
-    // it("type-mapped-native-single-literal", assertSchema("type-mapped-native-single-literal", "MyObject"));
-    // it("type-mapped-widened", assertSchema("type-mapped-widened", "MyObject"));
-    // it("type-mapped-optional", assertSchema("type-mapped-optional", "MyObject"));
-    // it("type-mapped-additional-props", assertSchema("type-mapped-additional-props", "MyObject"));
-    // it("type-mapped-array", assertSchema("type-mapped-array", "MyObject"));
-    // it("type-mapped-union-intersection", assertSchema("type-mapped-union-intersection", "MyObject"));
-    // it("type-mapped-enum", assertSchema("type-mapped-enum", "MyObject"));
-    // it("type-mapped-enum-optional", assertSchema("type-mapped-enum-optional", "MyObject"));
-    // it("type-mapped-enum-null", assertSchema("type-mapped-enum-null", "MyObject"));
-    // it("type-mapped-exclude", assertSchema("type-mapped-exclude", "MyObject", "extended"));
-    // it("type-mapped-double-exclude", assertSchema("type-mapped-double-exclude", "MyObject", "extended"));
-    // it("type-mapped-indexed", assertSchema("type-mapped-indexed", "MyObject", "extended"));
+    it("type-indexed-access-tuple-1", assertSchema("type-indexed-access-tuple-1", "MyType"));
+    it("type-indexed-access-tuple-2", assertSchema("type-indexed-access-tuple-2", "MyType"));
+    it("type-indexed-access-tuple-union", assertSchema("type-indexed-access-tuple-union", "FormLayout"));
+    it("type-indexed-access-object-1", assertSchema("type-indexed-access-object-1", "MyType"));
+    it("type-indexed-access-object-2", assertSchema("type-indexed-access-object-2", "MyType"));
+    it("type-indexed-access-keyof", assertSchema("type-indexed-access-keyof", "MyType"));
+    it("type-keyof-tuple", assertSchema("type-keyof-tuple", "MyType"));
+    it("type-keyof-object", assertSchema("type-keyof-object", "MyType"));
+    it("type-keyof-object-function", assertSchema("type-keyof-object-function", "MyType"));
+    it("type-mapped-simple", assertSchema("type-mapped-simple", "MyObject"));
+    it("type-mapped-index", assertSchema("type-mapped-index", "MyObject"));
+    it("type-mapped-literal", assertSchema("type-mapped-literal", "MyObject"));
+    it("type-mapped-generic", assertSchema("type-mapped-generic", "MyObject"));
+    it("type-mapped-native", assertSchema("type-mapped-native", "MyObject"));
+    it("type-mapped-native-single-literal", assertSchema("type-mapped-native-single-literal", "MyObject"));
+    it("type-mapped-widened", assertSchema("type-mapped-widened", "MyObject"));
+    it("type-mapped-optional", assertSchema("type-mapped-optional", "MyObject"));
+    it("type-mapped-additional-props", assertSchema("type-mapped-additional-props", "MyObject"));
+    it("type-mapped-array", assertSchema("type-mapped-array", "MyObject"));
+    it("type-mapped-union-intersection", assertSchema("type-mapped-union-intersection", "MyObject"));
+    it("type-mapped-enum", assertSchema("type-mapped-enum", "MyObject"));
+    it("type-mapped-enum-optional", assertSchema("type-mapped-enum-optional", "MyObject"));
+    it("type-mapped-enum-null", assertSchema("type-mapped-enum-null", "MyObject"));
+    it("type-mapped-exclude", assertSchema("type-mapped-exclude", "MyObject", "extended"));
+    it("type-mapped-double-exclude", assertSchema("type-mapped-double-exclude", "MyObject", "extended"));
+    it("type-mapped-indexed", assertSchema("type-mapped-indexed", "MyObject", "extended"));
 
     it("additional-props", assertSchema("nightlife/additional-props", "MyObject", "extended"));
     it("additional-props-multiple-args", assertSchema("nightlife/additional-props-multiple-args", "MyObject", "extended"));
@@ -167,6 +169,7 @@ describe("valid-data", () => {
     it("any", assertSchema("nightlife/any", "MyObject", "extended"));
     it("any-param", assertSchema("nightlife/any-param", "MyObject", "extended"));
     it("extended-interface-typearg", assertSchema("nightlife/extended-interface-typearg", "MyObject", "extended"));
+    it("double-type-alias", assertSchema("nightlife/double-type-alias", "MyObject", "extended"));
     it("object", assertSchema("nightlife/object", "MyObject", "extended"));
     it("oneof", assertSchema("nightlife/oneof", "MyObject", "extended"));
     it("prefixUnaryExpression", assertSchema("nightlife/prefixUnaryExpression", "MyObject", "extended"));
@@ -181,49 +184,50 @@ describe("valid-data", () => {
     it("type-pick2", assertSchema("nightlife/type-pick2", "MyObject", "extended"));
 
 
-    // it("generic-simple", assertSchema("generic-simple", "MyObject"));
-    // it("generic-arrays", assertSchema("generic-arrays", "MyObject"));
-    // it("generic-multiple", assertSchema("generic-multiple", "MyObject"));
-    // it("generic-multiargs", assertSchema("generic-multiargs", "MyObject"));
-    // it("generic-anonymous", assertSchema("generic-anonymous", "MyObject"));
-    // it("generic-recursive", assertSchema("generic-recursive", "MyObject"));
-    // it("generic-hell", assertSchema("generic-hell", "MyObject"));
-    // it("generic-default", assertSchema("generic-default", "MyObject"));
-    // it("generic-prefixed-number", assertSchema("generic-prefixed-number", "MyObject"));
-    // it("generic-void", assertSchema("generic-void", "MyObject"));
+    it("generic-simple", assertSchema("generic-simple", "MyObject"));
+    it("generic-arrays", assertSchema("generic-arrays", "MyObject"));
+    it("generic-multiple", assertSchema("generic-multiple", "MyObject"));
+    it("generic-multiargs", assertSchema("generic-multiargs", "MyObject"));
+    it("generic-anonymous", assertSchema("generic-anonymous", "MyObject"));
+    it("generic-recursive", assertSchema("generic-recursive", "MyObject"));
+    it("generic-hell", assertSchema("generic-hell", "MyObject"));
+    it("generic-default", assertSchema("generic-default", "MyObject"));
+    it("generic-prefixed-number", assertSchema("generic-prefixed-number", "MyObject"));
+    it("generic-void", assertSchema("generic-void", "MyObject"));
 
-    // it(
-    //     "annotation-custom",
-    //     assertSchema("annotation-custom", "MyObject", "basic", [
-    //         "customNumberProperty",
-    //        y "customComplexProperty",
-    //         "customMultilineProperty",
-    //         "customUnquotedProperty",
-    //     ])
-    // );
+    it(
+        "annotation-custom",
+        assertSchema("annotation-custom", "MyObject", "basic", [
+            "customNumberProperty",
+            "customComplexProperty",
+            "customMultilineProperty",
+            "customUnquotedProperty",
+            "customStringProperty"
+        ])
+    );
 
-    // it("nullable-null", assertSchema("nullable-null", "MyObject"));
+    it("nullable-null", assertSchema("nullable-null", "MyObject"));
 
-    // it("undefined-alias", assertSchema("undefined-alias", "MyType"));
-    // it("undefined-union", assertSchema("undefined-union", "MyType"));
-    // it("undefined-property", assertSchema("undefined-property", "MyType"));
+    it("undefined-alias", assertSchema("undefined-alias", "MyType"));
+    it("undefined-union", assertSchema("undefined-union", "MyType"));
+    it("undefined-property", assertSchema("undefined-property", "MyType"));
 
-    // it("any-unknown", assertSchema("any-unknown", "MyObject"));
+    it("any-unknown", assertSchema("any-unknown", "MyObject"));
 
-    // it("type-conditional-simple", assertSchema("type-conditional-simple", "MyObject"));
-    // it("type-conditional-inheritance", assertSchema("type-conditional-inheritance", "MyObject"));
-    // it("type-conditional-union", assertSchema("type-conditional-union", "MyObject"));
-    // it("type-conditional-enum", assertSchema("type-conditional-enum", "IParameter"));
-    // it("type-conditional-intersection", assertSchema("type-conditional-intersection", "MyObject"));
-    // it("type-conditional-exclude", assertSchema("type-conditional-exclude", "MyObject"));
-    // it("type-conditional-exclude-complex", assertSchema("type-conditional-exclude-complex", "BaseAxisNoSignals"));
-    // it("type-conditional-exclude-narrowing", assertSchema("type-conditional-exclude-narrowing", "MyObject"));
-    // it("type-conditional-narrowing", assertSchema("type-conditional-narrowing", "MyObject"));
-    // it("type-conditional-omit", assertSchema("type-conditional-omit", "MyObject"));
-    // it("type-conditional-jsdoc", assertSchema("type-conditional-jsdoc", "MyObject", "extended"));
+    it("type-conditional-simple", assertSchema("type-conditional-simple", "MyObject"));
+    it("type-conditional-inheritance", assertSchema("type-conditional-inheritance", "MyObject"));
+    it("type-conditional-union", assertSchema("type-conditional-union", "MyObject"));
+    it("type-conditional-enum", assertSchema("type-conditional-enum", "IParameter"));
+    it("type-conditional-intersection", assertSchema("type-conditional-intersection", "MyObject"));
+    it("type-conditional-exclude", assertSchema("type-conditional-exclude", "MyObject"));
+    it("type-conditional-exclude-complex", assertSchema("type-conditional-exclude-complex", "BaseAxisNoSignals"));
+    it("type-conditional-exclude-narrowing", assertSchema("type-conditional-exclude-narrowing", "MyObject"));
+    it("type-conditional-narrowing", assertSchema("type-conditional-narrowing", "MyObject"));
+    it("type-conditional-omit", assertSchema("type-conditional-omit", "MyObject"));
+    it("type-conditional-jsdoc", assertSchema("type-conditional-jsdoc", "MyObject", "extended"));
 
-    // it("multiple-roots1", assertSchema("multiple-roots1"));
-    // it("multiple-roots1-star", assertSchema("multiple-roots1", "*"));
-    // it("multiple-roots2", assertSchema("multiple-roots2/schema"));
-    // it("keyof-typeof-enum", assertSchema("keyof-typeof-enum", "MyObject"));
+    it("multiple-roots1", assertSchema("multiple-roots1"));
+    it("multiple-roots1-star", assertSchema("multiple-roots1", "*"));
+    it("multiple-roots2", assertSchema("multiple-roots2/schema"));
+    it("keyof-typeof-enum", assertSchema("keyof-typeof-enum", "MyObject"));
 });

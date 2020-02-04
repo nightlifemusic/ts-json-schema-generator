@@ -9,7 +9,8 @@
             "request": "attach",
             "name": "Attach",
             "port": 9229,
-            "protocol": "inspector"
+            "protocol": "inspector",
+            "stopOnEntry": false
         }
     ]
 }
